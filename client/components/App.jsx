@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import styled from 'styled-components';
 
 const TopBar = styled.div`
@@ -11,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      state: '',
+      topSubs: [],
     };
   }
 
