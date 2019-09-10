@@ -1,27 +1,43 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import banner from './assets/reddit-banner.jpg';
 import Sub from './SubPanel.jsx';
 
 const TopTensApp = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 700px;
+  justify-content: center;
+  width: 1280px;
+  height: auto;
   margin: 0 auto;
   font-family: IBMPlexSans, Arial, sans-serif;
+  background-color: #bebebe;
 `;
 
 const TopBar = styled.div`
-  font-size: 40px;
-  width: auto;
-  height: 50px;
+  background: url(${banner});
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #07b0f0;
+  font-size: 65px;
+  height: 80px;
+  text-align: center;
+  text-shadow: 2px 2px 2px black;
+  width: 100%;
 `;
 
-const SubContainer = styled.div`
-  display: block;
-  width: 800px;
+const SubContainer = styled.ul`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 12px;
+  width: 98%;
   height: auto;
+  list-style: none;
+  padding-left: 0;
+  background-color: #f6f3d3;
+  border-radius: 5px;
 `;
 
 class App extends Component {
@@ -37,7 +53,7 @@ class App extends Component {
   }
 
   fetchTopSubs() {
-    axios.get('/top10')
+    axios.get('/top10Subs')
       .then((result) => {
         this.setState({
           topSubs: result.data,

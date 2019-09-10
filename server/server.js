@@ -56,10 +56,18 @@ app.get('/top10Subs', (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
-app.get('/top10Posts', (req, res) => {
+app.get('/top10Posts/:sub', (req, res) => {
   const { sub } = req.params;
-  axios.get(`https://www.reddit.com/r/${sub}/top/.json?count=10`)
+  axios.get(`https://www.reddit.com/r/${sub}/top/.json?limit=10`)
     .then((result) => result.data.data.children)
     .then((posts) => res.status(200).send(posts))
+    .catch((err) => res.status(400).send(err));
+});
+
+app.get('/top10Comments/', (req, res) => {
+  const { sub, id } = req.query;
+  axios.get(`https://www.reddit.com/r/${sub}/comments/${id}.json?sort=top&limit=10&depth=1`)
+    .then((result) => result.data[1].data.children)
+    .then((comments) => res.status(200).send(comments))
     .catch((err) => res.status(400).send(err));
 });
