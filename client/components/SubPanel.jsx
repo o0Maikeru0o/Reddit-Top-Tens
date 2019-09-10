@@ -11,17 +11,17 @@ const SubPanelWrapper = styled.div`
   margin: 5px;
 `;
 
-const SubPanel = styled.li`
+const SubPanel = styled.div`
   display: flex;
+  flex-direction: column;
   width: 99%;
   height: 10%;
-  justify-content: left;
   margin: 5px;
-  background-color: #ececec;
+  background-color: #e4c3d3;
   border: 2px solid #a2a1a1;
-  border-radius: 20px;
+  border-radius: 5px;
   &:hover {
-    background-color: #d8d8d8;
+    background-color: #e6adad;
   };
 `;
 const SubIcon = styled.img`
@@ -32,22 +32,37 @@ const SubIcon = styled.img`
   left: 5px;
   border-radius: 50%;
 `;
-const SubTitle = styled.span`
+const SubTitle = styled.div`
+  width: 10%;
   margin-left: 10px;
   font-size: 20px;
 `;
-const SubDesc = styled.span`
-  margin-left: 10px;
+const SubDesc = styled.div`
+  flex: none;
+  align-self: center;
   margin-top: 5px;
+  margin-left: 30px;
+  position: absolute;
+  font-size: 20px;
+  max-width: 850px;
 `;
 
 // const ExpandArrow = styled.FaChevronCircleDown`
 
 // `;
+const SubStats = styled.div`
+  align-self: flex-end;
+  padding-top: 7px;
+  padding-right: 40px;
+  position: absolute;
+  color: #01f;
+`;
 
-const PostContainer = styled.ul`
+const PostContainer = styled.div`
+  dsiplay: inline-flex;
+  justify-content: center;
+  align-content: center;
   background-color: #ebebeb;
-  list-style: none;
   padding-left: 0;
 `;
 
@@ -80,7 +95,7 @@ class Sub extends Component {
 
   render() {
     const {
-      icon_img, display_name, display_name_prefixed, header_img, public_description,
+      icon_img, display_name, display_name_prefixed, header_img, public_description, subscribers
     } = this.props.subData;
     const { posts, expanded } = this.state;
     const post = posts.map((post) => <Post key={post.data.id} postData={post.data} />);
@@ -91,6 +106,10 @@ class Sub extends Component {
           <SubIcon src={icon_img || header_img || defaultIcon} alt={`${display_name_prefixed} icon`} />
           <SubTitle href={`https://www.reddit.com/r/${display_name}`}>{display_name_prefixed}</SubTitle>
           <SubDesc>{public_description}</SubDesc>
+          <SubStats>
+            <div>Subscribers</div>
+            <div>{subscribers}</div>
+          </SubStats>
         </SubPanel>
         {expanded ? <PostContainer>{post}</PostContainer> : null}
       </SubPanelWrapper>

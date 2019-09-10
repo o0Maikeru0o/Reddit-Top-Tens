@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CommentPanel = styled.li`
+const CommentPanel = styled.div`
   background-color: #dfffea;
   border: 3px solid #a2a1a1;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 5px;
   display: flex;
   justify-content: space-between;
@@ -12,7 +12,7 @@ const CommentPanel = styled.li`
   height: 10%;
   margin: 10px;
   &:hover {
-    background-color: #a4e1d4;
+    background-color: #a1cedb;
   };
 `;
 
@@ -31,8 +31,8 @@ const CommentText = styled.p`
 const CommentScore = styled.div`
   display: block;
   text-align: center;
-  color: black;
-  font-size: 20px;
+  color: #01f;
+  font-size: 17px;
 `;
 
 const Comment = (props) => {
@@ -46,7 +46,7 @@ const Comment = (props) => {
       <CommentAuthor>{author}</CommentAuthor>
       <CommentText>{body}</CommentText>
       <CommentScore>
-        <div>Upvotes</div>
+        <div>Score</div>
         <div>{score}</div>
       </CommentScore>
     </CommentPanel>

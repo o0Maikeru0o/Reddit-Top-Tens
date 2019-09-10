@@ -27,8 +27,8 @@ const TopBar = styled.div`
   width: 100%;
 `;
 
-const SubContainer = styled.ul`
-  display: flex;
+const SubContainer = styled.div`
+  display: inline-flex;
   flex-direction: column;
   justify-content: center;
   margin-left: 12px;
@@ -64,7 +64,9 @@ class App extends Component {
   render() {
     const { topSubs } = this.state;
     const subPanels = topSubs.map((sub) => <Sub key={sub.data.id} subData={sub.data} />);
-
+    if (!topSubs) {
+      return <h1>LOADING...</h1>;
+    }
     return (
       <TopTensApp>
         <TopBar>My Top Tens of Reddit</TopBar>
