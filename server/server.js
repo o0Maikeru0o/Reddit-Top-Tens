@@ -14,7 +14,7 @@ app.use('/', express.static(`${__dirname}/../public`));
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
-const filterTopTenSubs = (subs) => subs.sort((a, b) => b.data.subscribers - a.data.subscribers);
+const filterTopTenSubs = (subs) => subs.sort((a, b) => b.data.subscribers - a.data.subscribers).slice(0, 10);
 
 const getUserSubs = async (token) => {
   let userSubs = [];
@@ -34,11 +34,11 @@ const getUserSubs = async (token) => {
       });
   }
   await recurseSubPages(token);
-  return filterTopTenSubs(userSubs).slice(0, 10);
+  return filterTopTenSubs(userSubs);
 };
 
 
-app.get('/top10', (req, res) => {
+app.get('/top10Subs', (req, res) => {
   axios({
     headers: {
       'Content-Type': 'application/json',
@@ -53,5 +53,13 @@ app.get('/top10', (req, res) => {
     .then((result) => result.data.access_token)
     .then((token) => getUserSubs(token))
     .then((subs) => res.status(200).send(subs))
+    .catch((err) => res.status(400).send(err));
+});
+
+app.get('/top10Posts', (req, res) => {
+  const { sub } = req.params;
+  axios.get(`https://www.reddit.com/r/${sub}/top/.json?count=10`)
+    .then((result) => result.data.data.children)
+    .then((posts) => res.status(200).send(posts))
     .catch((err) => res.status(400).send(err));
 });
