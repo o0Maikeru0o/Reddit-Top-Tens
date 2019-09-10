@@ -1,33 +1,41 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import Comment from './CommentsPanel.jsx'
 import redditAlien from './assets/reddit-alien.svg';
-
+const PostPanelWrapper = styled.div`
+  border: 2px solid #82d5e5;
+  border-radius: 5px;
+`;
 const PostPanel = styled.div`
   background-color: #d4e6ff;
+  border: 2px solid #a2a1a1;
   border-radius: 5px;
   padding: 5px;
   display: flex;
-  width: 95%;
+  width: 97%;
   height: 10%;
   margin: 10px;
 `;
 const PostIcon = styled.img`
+  flex: none;
   height: 60px;
   width: 60px;
   left: 5px;
+  margin-right: 5px;
   border-radius: 5px;
 `;
 const PostTitle = styled.a`
-  color: black;
-  margin-left: 10px;
-  font-size: 20px;
-  text-decoration: none;
-  &:hover: {
-    color: #046dff;
+    color: black;
+    height: auto;
+    font-size: 18px;
+    height: auto;
+    margin-left: 5px;
     text-decoration:none;
-    cursor:pointer;
-  }
+    &:hover {
+      cursor:pointer;
+      color: #046dff;
+    }
 `;
 
 const CommentContainer = styled.ul`
@@ -52,11 +60,12 @@ class Post extends Component {
 
   fetchTopComments(sub, id) {
     axios.get('/top10Comments/', { params: { sub, id } })
-      .then((result) => result.data)
+      .then((result) => this.setState({ comments: result.data }))
       .catch((err) => console.log(err));
   }
 
   toggleExpand() {
+    console.log('clicked')
     const { expanded } = this.state;
     this.setState({
       expanded: !expanded,
@@ -68,16 +77,18 @@ class Post extends Component {
       title, id, thumbnail, author, num_comments, score, created, permalink
     } = this.props.postData;
     const { comments, expanded } = this.state;
-    const comment = comments.map((comment) => <Post key={comment.data.id} postData={comment.data} />);
-
+    const comment = comments.map((comment) => <Comment key={comment.data.id} commentData={comment.data} />);
+    console.log(comment)
     return (
-      <>
-        <PostPanel onClick={() => { this.toggleExpand(); }}>
+      <PostPanelWrapper>
+        <PostPanel onClick={() => this.toggleExpand()}>
           <PostIcon src={thumbnail || redditAlien} alt="Post Image" />
+          <div>
           <PostTitle target="_blank" href={`https://www.reddit.com/${permalink}`}>{title}</PostTitle>
+          </div>
         </PostPanel>
         {expanded ? <CommentContainer>{comment}</CommentContainer> : null}
-      </>
+      </PostPanelWrapper>
     );
   }
 }

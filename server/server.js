@@ -67,7 +67,7 @@ app.get('/top10Posts/:sub', (req, res) => {
 app.get('/top10Comments/', (req, res) => {
   const { sub, id } = req.query;
   axios.get(`https://www.reddit.com/r/${sub}/comments/${id}.json?sort=top&limit=10&depth=1`)
-    .then((result) => result.data[1].data.children)
+    .then((result) => result.data[1].data.children.slice(0, 10))
     .then((comments) => res.status(200).send(comments))
     .catch((err) => res.status(400).send(err));
 });

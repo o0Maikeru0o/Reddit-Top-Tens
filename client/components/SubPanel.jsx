@@ -5,14 +5,24 @@ import { FaChevronCircleUp, FaChevronCircleDown } from 'react-icons/fa';
 import Post from './PostPanel.jsx';
 import defaultIcon from './assets/defaultIcon.svg';
 
+const SubPanelWrapper = styled.div`
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 5px;
+`;
+
 const SubPanel = styled.li`
   display: flex;
-  width: 97%;
+  width: 99%;
   height: 10%;
-  margin: 10px;
+  justify-content: left;
+  margin: 5px;
   background-color: #ececec;
   border: 2px solid #a2a1a1;
   border-radius: 20px;
+  &:hover {
+    background-color: #d8d8d8;
+  };
 `;
 const SubIcon = styled.img`
   flex: none;
@@ -31,9 +41,9 @@ const SubDesc = styled.span`
   margin-top: 5px;
 `;
 
-const ExpandArrow = styled.img`
+// const ExpandArrow = styled.FaChevronCircleDown`
 
-`;
+// `;
 
 const PostContainer = styled.ul`
   background-color: #ebebeb;
@@ -76,15 +86,14 @@ class Sub extends Component {
     const post = posts.map((post) => <Post key={post.data.id} postData={post.data} />);
 
     return (
-      <>
+      <SubPanelWrapper>
         <SubPanel onClick={() => { this.toggleExpand(); }}>
           <SubIcon src={icon_img || header_img || defaultIcon} alt={`${display_name_prefixed} icon`} />
           <SubTitle>{display_name_prefixed}</SubTitle>
           <SubDesc>{public_description}</SubDesc>
         </SubPanel>
         {expanded ? <PostContainer>{post}</PostContainer> : null}
-      </>
-
+      </SubPanelWrapper>
     );
   }
 }
