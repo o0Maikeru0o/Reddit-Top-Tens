@@ -17,6 +17,19 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    this.fetchTopSubs();
+  }
+
+  fetchTopSubs() {
+    axios.get('/top10')
+      .then((result) => {
+        this.setState({
+          topSubs: result.data,
+        });
+      }).catch((err) => console.log(err));
+  }
+
   render() {
     return (
       <TopBar>HELLO WORLD!</TopBar>
