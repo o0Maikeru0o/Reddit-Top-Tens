@@ -16,6 +16,9 @@ const PostPanel = styled.div`
   width: 97%;
   height: 10%;
   margin: 10px;
+  &:hover {
+    background-color: #a1cedb;
+  };
 `;
 const PostIcon = styled.img`
   flex: none;

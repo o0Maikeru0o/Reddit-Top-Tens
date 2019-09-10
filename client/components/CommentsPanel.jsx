@@ -11,6 +11,9 @@ const CommentPanel = styled.li`
   width: 97%;
   height: 10%;
   margin: 10px;
+  &:hover {
+    background-color: #a4e1d4;
+  };
 `;
 
 const CommentAuthor = styled.span`

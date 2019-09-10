@@ -89,7 +89,7 @@ class Sub extends Component {
       <SubPanelWrapper>
         <SubPanel onClick={() => { this.toggleExpand(); }}>
           <SubIcon src={icon_img || header_img || defaultIcon} alt={`${display_name_prefixed} icon`} />
-          <SubTitle>{display_name_prefixed}</SubTitle>
+          <SubTitle href={`https://www.reddit.com/r/${display_name}`}>{display_name_prefixed}</SubTitle>
           <SubDesc>{public_description}</SubDesc>
         </SubPanel>
         {expanded ? <PostContainer>{post}</PostContainer> : null}
