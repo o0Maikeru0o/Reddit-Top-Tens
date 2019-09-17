@@ -36,13 +36,12 @@ const CommentScore = styled.div`
 `;
 
 const Comment = (props) => {
-  console.log(props)
   const {
-    body, author, score, created
+    body, author, score, created,
   } = props.commentData;
 
   return (
-    <CommentPanel>
+    <CommentPanel ref={props.innerRef}>
       <CommentAuthor>{author}</CommentAuthor>
       <CommentText>{body}</CommentText>
       <CommentScore>
@@ -54,4 +53,9 @@ const Comment = (props) => {
 };
 
 
-export default Comment;
+export default React.forwardRef((props, ref) => (
+  <Comment
+    innerRef={ref}
+    {...props}
+  />
+));

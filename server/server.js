@@ -18,8 +18,8 @@ const filterTopTenSubs = (subs) => subs.sort((a, b) => b.data.subscribers - a.da
 
 const getUserSubs = async (token) => {
   let userSubs = [];
-  function recurseSubPages(token, more) {
-    return axios.get(`https://oauth.reddit.com/subreddits/mine/subscriber?limit=100&after=${more}`, {
+  function recurseSubPages(token, after) {
+    return axios.get(`https://oauth.reddit.com/subreddits/mine/subscriber?limit=100&after=${after}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

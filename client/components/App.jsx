@@ -8,11 +8,12 @@ const TopTensApp = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 1280px;
-  height: auto;
+  max-width: 1280px;
+  max-height: 1000px;
   margin: 0 auto;
   font-family: IBMPlexSans, Arial, sans-serif;
   background-color: #bebebe;
+  overflow: scroll;
 `;
 
 const TopBar = styled.div`
@@ -28,9 +29,8 @@ const TopBar = styled.div`
 `;
 
 const SubContainer = styled.div`
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
-  justify-content: center;
   margin-left: 12px;
   width: 98%;
   height: auto;
@@ -38,6 +38,7 @@ const SubContainer = styled.div`
   padding-left: 0;
   background-color: #f6f3d3;
   border-radius: 5px;
+  overflow: scroll;
 `;
 
 class App extends Component {

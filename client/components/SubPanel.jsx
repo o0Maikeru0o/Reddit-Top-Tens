@@ -1,34 +1,39 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import posed, { PoseGroup } from 'react-pose';
 import axios from 'axios';
-import { FaChevronCircleUp, FaChevronCircleDown } from 'react-icons/fa';
+import onClickOutside from 'react-onclickoutside';
+import { FaChevronCircleRight } from 'react-icons/fa';
 import Post from './PostPanel.jsx';
 import defaultIcon from './assets/defaultIcon.svg';
 
-const SubPanelWrapper = styled.div`
-  border: 2px solid black;
-  border-radius: 5px;
-  margin: 5px;
-`;
 
 const SubPanel = styled.div`
+  background-color: #e4c3d3;
+  border: 3px solid #a2a1a1;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  width: 99%;
   height: 10%;
   margin: 5px;
-  background-color: #e4c3d3;
-  border: 2px solid #a2a1a1;
-  border-radius: 5px;
-  &:hover {
-    background-color: #e6adad;
+  padding: 5px;
+  width: 98%;
+    &:hover {
+      background-color: #e6adad;
   };
 `;
+
+const SubConent = styled.div`
+  display: inline-flex;
+  min-height: 80px;
+  border: 2px solid black;
+  border-radius: 5px;
+`;
+
 const SubIcon = styled.img`
-  flex: none;
   margin: 5px 0px 5px 5px;
-  height: 60px;
-  width: 60px;
+  max-height: 70px;
+  max-width: 70px;
   left: 5px;
   border-radius: 50%;
 `;
@@ -37,34 +42,60 @@ const SubTitle = styled.div`
   margin-left: 10px;
   font-size: 20px;
 `;
+
 const SubDesc = styled.div`
-  flex: none;
   align-self: center;
   margin-top: 5px;
   margin-left: 30px;
-  position: absolute;
   font-size: 20px;
   max-width: 850px;
 `;
 
-// const ExpandArrow = styled.FaChevronCircleDown`
 
-// `;
-const SubStats = styled.div`
+const ExpandArrow = styled(posed.div({
+  open: {
+    rotate: 90,
+  },
+  closed: {
+    rotate: 0,
+  },
+}))`
+  position: relative;
+  width: 17px;
+  height: 17px;
+  right: 3px;
+  margin-bottom: 3px;
   align-self: flex-end;
+`;
+
+const Arrow = styled(FaChevronCircleRight)`
+width: 17px;
+height: 17px;
+`;
+
+const SubStats = styled.div`
+  height: 40px;
+  margin-left: auto;
   padding-top: 7px;
-  padding-right: 40px;
-  position: absolute;
   color: #01f;
 `;
 
 const PostContainer = styled.div`
-  dsiplay: inline-flex;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-content: center;
-  background-color: #ebebeb;
+  background-color: #e4c3d3;
   padding-left: 0;
 `;
+
+const PostContent = posed(Post)({
+  enter: { height: '100%' },
+  exit: {
+    height: 0,
+
+  },
+});
 
 class Sub extends Component {
   constructor(props) {
@@ -82,7 +113,7 @@ class Sub extends Component {
 
   fetchTopPosts(sub) {
     axios.get(`/top10Posts/${sub}`)
-      .then((result) => this.setState({ posts: result.data }, console.log('posts', this.state.posts)))
+      .then((result) => this.setState({ posts: result.data }))
       .catch((err) => console.log(err));
   }
 
@@ -93,16 +124,23 @@ class Sub extends Component {
     });
   }
 
+  handleClickOutside(e) {
+    this.setState({
+      expanded: false,
+    });
+  }
+
   render() {
     const {
-      icon_img, display_name, display_name_prefixed, header_img, public_description, subscribers
+      icon_img, display_name, display_name_prefixed, header_img, public_description, subscribers,
     } = this.props.subData;
     const { posts, expanded } = this.state;
-    const post = posts.map((post) => <Post key={post.data.id} postData={post.data} />);
+    const content = posts.map((post) => <PostContent key={post.data.id} postData={post.data} />);
 
     return (
-      <SubPanelWrapper>
-        <SubPanel onClick={() => { this.toggleExpand(); }}>
+
+      <SubPanel>
+        <SubConent onClick={() => { this.toggleExpand(); }}>
           <SubIcon src={icon_img || header_img || defaultIcon} alt={`${display_name_prefixed} icon`} />
           <SubTitle href={`https://www.reddit.com/r/${display_name}`}>{display_name_prefixed}</SubTitle>
           <SubDesc>{public_description}</SubDesc>
@@ -110,11 +148,18 @@ class Sub extends Component {
             <div>Subscribers</div>
             <div>{subscribers}</div>
           </SubStats>
-        </SubPanel>
-        {expanded ? <PostContainer>{post}</PostContainer> : null}
-      </SubPanelWrapper>
+          <ExpandArrow pose={expanded ? 'open' : 'closed'}>
+            <Arrow />
+          </ExpandArrow>
+        </SubConent>
+        <PostContainer>
+          <PoseGroup>
+            {expanded && content}
+          </PoseGroup>
+        </PostContainer>
+      </SubPanel>
     );
   }
 }
 
-export default Sub;
+export default onClickOutside(Sub);
